@@ -1,0 +1,13 @@
+{
+    "rules": {
+        "no-unused-expressions": [0],
+    },
+    "env": {
+        "node": true,
+        "mocha": true,
+        "jasmine": true
+    },
+    "globals": {
+        "assert": true;
+    }
+}
