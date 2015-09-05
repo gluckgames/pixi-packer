@@ -30,7 +30,7 @@ var outputPath = path.resolve(argv._[1]);
 
 var config = require(resourceFilePath);
 var inputPath = path.dirname(resourceFilePath);
-var cachePath = argv.cache || path.normalize("~/.pixi-packer-tmp");
+var cachePath = argv.cache || path.join(process.env.HOME || process.env.USERPROFILE, ".pixi-packer-tmp");
 
 var pixiPacker = new PixiPacker(config, inputPath, outputPath, cachePath);
 
