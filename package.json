@@ -1,6 +1,6 @@
 {
   "name": "pixi-packer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A quick and flexible texture packer for PIXI.js",
   "scripts": {},
   "main": "index.js",
@@ -16,11 +16,9 @@
     "sinon": "~1.14.1",
     "sinon-chai": "~2.7.0"
   },
-  "optionalDependencies": {
-    "imagemin": "^3.2.0",
-    "imagemin-pngquant": "~4.1.0"
-  },
   "dependencies": {
+    "imagemin": "^3.2.0",
+    "imagemin-pngquant": "~4.1.0",
     "fs-extra": "^0.22.1",
     "glob": "^5.0.13",
     "gm": "^1.18.1",
