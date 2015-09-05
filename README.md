@@ -74,6 +74,11 @@ module.exports = {
     },
 
     /**
+     * Trims of transparent pixels at the sprite edges
+     **/
+    "trim": true,
+
+    /**
      * Groups are units of images that fall into the same category in respect to
      * - Language: EN, DE, or (if not defined) both
      * - JPEG: true/false (e.g. do we need an alpha channel?)
