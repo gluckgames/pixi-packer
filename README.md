@@ -209,7 +209,7 @@ By default ```~/.pixi-packer-tmp``` is used as cache folder. You can use a diffe
 
 Please don't commit your cache folder or share it between machines, it will not work and might lead to unexpected behaviour.
 
-For the purpose of cache invalidation cache keys are hashes based on the source sprites. To avoid having to open every image the hash is based on the full path, file size and last modified time.
+For the purpose of cache invalidation cache keys are hashes based on the source sprites. To avoid having to open every image the hash is based on the full path and file size.
 
 If for some reason the cache has become stale or just too large (nothing is ever deleted) you can delete the cache folder or use ```--clean-cache```.
 
