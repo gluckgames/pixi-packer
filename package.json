@@ -5,9 +5,7 @@
   "scripts": {},
   "main": "index.js",
   "repository": "gamevy/pixi-packer",
-  "bin": {
-    "pixi-packer": "./cli.js"
-  },
+  "bin": "./cli.js",
   "author": "Gamevy",
   "license": "MIT",
   "devDependencies": {
