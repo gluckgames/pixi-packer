@@ -2,12 +2,13 @@
   "name": "pixi-packer",
   "version": "1.1.2",
   "description": "A quick and flexible texture packer for PIXI.js",
-  "scripts": {},
+  "scripts": {
+    "pretest": "eslint lib test example.js",
+    "test": "mocha --recursive test"
+  },
   "main": "index.js",
   "repository": "gamevy/pixi-packer",
-  "bin": {
-    "pixi-packer": "./cli.js"
-  },
+  "bin": "./cli.js",
   "author": "Gamevy",
   "license": "MIT",
   "devDependencies": {
@@ -32,5 +33,12 @@
     "spritesmith": "^1.3.2",
     "underscore": "^1.8.3",
     "yargs": "~3.9.1"
-  }
+  },
+  "files": [
+    "lib",
+    "cli.js",
+    "index.js"
+  ],
+  "author": "Marek Ventur <marek@gamevy.com>",
+  "license": "MIT"
 }

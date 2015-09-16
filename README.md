@@ -1,4 +1,7 @@
 # PIXI Packer
+[![Build Status](https://travis-ci.org/gamevy/pixi-packer.svg?branch=master)](https://travis-ci.org/gamevy/pixi-packer)
+[![Dependency Status](https://david-dm.org/gamevy/pixi-packer.svg)](https://david-dm.org/gamevy/pixi-packer)
+
 PIXI Packer is a sprite packer made for HTML5 game engine <a href="https://github.com/pixijs/pixi.js">PIXI.js</a>. It's designed to create small downloads and be easy and fast to use.
 
 ```
@@ -27,162 +30,12 @@ The aim is to provide all the most useful features of commercial sprite packers 
 - ImageMagick
 
 ## Usage
-Create an ```image-config.js``` in the folder where you're storing your sprites.
-
-Example:
-```Javascript
-module.exports = {
-    /* Only "true" is supported (read: tested) at the moment */
-    "use_image_magick": true,
-
-    /**
-     * This defines a set of scales. For every scale a full set of
-     * spritesheets will be generated. The "resolution" field is passed
-     * through to PIXI.
-     **/
-    "scales": {
-        "web": {"scale": 0.5, "resolution": 1},
-        "web_retina": {"scale": 1, "resolution": 2}
-    },
-
-    /**
-     * Variations can be used for themes or languages. Sprites that are
-     * not part of one variation will be included in all of them.
-     **/
-    "variations": ["EN", "DE"],
-
-    /**
-     * Different loading stages mean the game can started before all
-     * images have been loaded. Remaining images can be loaded while
-     * the user makes decisions or the game is going on.
-     **/
-    "loading_stages": [
-        "initial",
-        "game"
-    ],
-
-    /**
-     * This enforces an upper bound of pixels per sprite sheet. This can be
-     * useful for older browsers and devices, especially Safari on iPhone4s who
-     * starts to behave weirdly with images larger than 3 megapixel. See
-     * http://www.williammalone.com/articles/html5-javascript-ios-maximum-image-size/
-     * for more information.
-     **/
-    "max_pixels_per_sprite_sheet": {
-        "soft": 2.2 * 1024 * 1024,
-        "hard": 3 * 1024 * 1024
-    },
-
-    /**
-     * Trims of transparent pixels at the sprite edges
-     **/
-    "trim": true,
-
-    /**
-     * Groups are units of images that fall into the same category in respect to
-     * - Language: EN, DE, or (if not defined) both
-     * - JPEG: true/false (e.g. do we need an alpha channel?)
-     * - loading stage (see above)
-     * - compression ("pngquant" (default), "optipng", "none" - some sprites look
-     *                bad when compressed) (only applies to png)
-     *
-     * Comparison of png compression algorithms:
-     * http://pointlessramblings.com/posts/pngquant_vs_pngcrush_vs_optipng_vs_pngnq/
-     *
-     * All paths are relative to this file
-     **/
-    "groups": [
-        /* English */
-        {
-            "id": "en_initial",
-            "variation": "EN",
-            "loading_stage": "initial",
-            "sprites": ["images/EN/*.png", "images/EN/branding/*.png"]
-        },
-        {
-            "id": "en_jpeg_game",
-            "variation": "EN",
-            "jpeg": true,
-            "quality": 75,
-            "loading_stage": "game",
-            "sprites": ["images/EN/placeholder/*.png"]
-        },
-        {
-            "id": "en_game",
-            "variation": "EN",
-            "loading_stage": "game",
-            "sprites": ["images/EN/game_animations/*.png"]
-        },
-
-        /* German */
-        {
-            "id": "de_initial",
-            "variation": "DE",
-            "loading_stage": "initial",
-            "sprites": ["images/DE/*.png", "images/DE/branding/*.png"]
-        },
-        {
-            "id": "de_jpeg_game",
-            "variation": "DE",
-            "jpeg": true,
-            "quality": 75,
-            "loading_stage": "game",
-            "sprites": ["images/DE/placeholder/*.png"]
-        },
-        {
-            "id": "de_game",
-            "variation": "DE",
-            "loading_stage": "game",
-            "sprites": ["images/DE/game_animations/*.png"]
-        },
-
-        /* Language independent */
-        {   // No Alpha channel
-            "id": "jpeg_initial",
-            "jpeg": true,
-            "quality": 75,
-            "loading_stage": "initial",
-            "sprites": ["images/backgrounds/initial/*.png"]
-        },
-        {   // No Alpha channel and only needed during game
-            "id": "jpeg_game",
-            "jpeg": true,
-            "quality": 75,
-            "loading_stage": "game",
-            "sprites": ["images/backgrounds/game/*.png"]
-        },
-        {   // Only needed during game, but with alpha channel
-            "id": "game",
-            "loading_stage": "game",
-            "sprites": [
-                "images/shapes/*.png",
-            ]
-        },
-        {   // Sprites that look bad using pngquant
-            "id": "high_quality_game",
-            "compression": "optipng",
-            "loading_stage": "game",
-            "sprites": [
-                "images/gradients/*.png",
-            ]
-        },
-        {   // All the rest
-            "id": "initial",
-            "loading_stage": "initial",
-            "sprites": [
-                "images/arrows/*.png",
-                "images/circles/*.png",
-                "images/animations/*.png",
-            ]
-        }
-    ]
-};
-
-```
+Create an ```images.js``` in the folder where you're storing your sprites. Have a look at ```example.js``` in this folder
+for an in-depth explanation.
 
 Now you can create your spritesheets via
 ```
-pixi-packer path/to/image-config.js build/images/
+pixi-packer path/to/images.js build/images/
 ```
 
 The first round of processing will take a while but subsequent re-runs will be a lot quicker. On our relatively large test set of 1.5k sprites a warm-cache run takes about 2 second.
@@ -240,6 +93,5 @@ gulp.task("sprites", function () {
     return pixiPacker.process();
 });
 ```
-
-
-
+## Acknowledgement
+Graphics used in the ```example-sprites``` folder are taken from http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html
