@@ -87,7 +87,7 @@ describe("ImageProcessor", function () {
         });
 
         it("compression 'optipng'", function() {
-            return imageProcessor.saveImageAsPng(input, outputPath, 0, "pngquant")
+            return imageProcessor.saveImageAsPng(input, outputPath, 0, "optipng")
             .then(function() {
                 assert.ok(fs.statSync(outputPath).size < inputSize);
             });
