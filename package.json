@@ -6,6 +6,7 @@
     "pretest": "eslint lib test example.js",
     "test": "mocha --recursive test"
   },
+  "engines" : { "node" : ">=0.11.0" },
   "main": "index.js",
   "repository": "gamevy/pixi-packer",
   "bin": "./cli.js",
