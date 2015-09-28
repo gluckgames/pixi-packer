@@ -28,7 +28,7 @@ describe("Full run", function () {
 
             pixiPacker = new PixiPacker(
                 config,
-                path.resolve(__dirname, ".."),
+                path.resolve(__dirname, "../.."),
                 path.resolve(__dirname, outputPath),
                 path.resolve(__dirname, tempPath)
             );
@@ -60,12 +60,13 @@ describe("Full run", function () {
     });
 
     it("has the right resolution", function() {
-        var manifest = require(outputPath + "/game_DE_web_retina.json");
+        var manifest = JSON.parse(fs.readFileSync(outputPath + "/game_DE_web_retina.json", "utf8"));
         assert.equal(manifest.resolution, 2);
     });
 
     it("creates all images", function() {
-        var manifest = require(outputPath + "/game_DE_web_retina.json");
+        var manifest = JSON.parse(fs.readFileSync(outputPath + "/game_DE_web_retina.json", "utf8"));
+        assert.ok(manifest.spritesheets.length > 0);
         manifest.spritesheets.forEach(function(spritesheet) {
             assert.ok(fs.lstatSync(outputPath + "/" + spritesheet.image).isFile());
         });
