@@ -74,6 +74,8 @@ pixi-packer goes to some lengths avoiding opening images in order to improve per
 
 ```javascript
 gulp.task("sprites", function () {
+    // Hack: Avoid require-cache
+    delete require.cache[require.resolve("../resources/images.js")];
     var config = require("./resources/images.js");
 
     var pixiPacker = new PixiPacker(
