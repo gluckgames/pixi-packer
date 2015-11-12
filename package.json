@@ -22,13 +22,13 @@
     "sinon-chai": "~2.7.0"
   },
   "dependencies": {
-    "imagemin": "^3.2.0",
-    "imagemin-pngquant": "~4.1.0",
-    "fs-extra": "^0.22.1",
-    "glob": "^5.0.13",
-    "gm": "^1.18.1",
+    "fs-extra": "^0.26.2",
+    "glob": "^6.0.1",
+    "gm": "^1.21.1",
     "gmsmith": "^0.6.4",
     "image-size": "^0.3.5",
+    "imagemin": "^3.2.0",
+    "imagemin-pngquant": "~4.1.0",
     "mkdirp": "^0.5.1",
     "pixelsmith": "^1.1.2",
     "q": "^1.4.0",
@@ -36,7 +36,7 @@
     "rimraf": "^2.4.1",
     "spritesmith": "^1.5.0",
     "underscore": "^1.8.3",
-    "yargs": "~3.9.1"
+    "yargs": "^3.29.0"
   },
   "files": [
     "lib",
