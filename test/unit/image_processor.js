@@ -82,14 +82,14 @@ describe("ImageProcessor", function () {
         it("compression 'pngquant'", function() {
             return imageProcessor.saveImageAsPng(input, outputPath, 0, "pngquant")
             .then(function() {
-                assert.ok(fs.statSync(outputPath).size < inputSize);
+                assert.isBelow(fs.statSync(outputPath).size, inputSize);
             });
         });
 
         it("compression 'optipng'", function() {
             return imageProcessor.saveImageAsPng(input, outputPath, 0, "optipng")
             .then(function() {
-                assert.ok(fs.statSync(outputPath).size < inputSize);
+                assert.isBelow(fs.statSync(outputPath).size, inputSize);
             });
         });
     });
