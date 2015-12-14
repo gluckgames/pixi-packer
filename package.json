@@ -27,7 +27,7 @@
     "glob": "^6.0.1",
     "gm": "^1.21.1",
     "gmsmith": "^0.6.4",
-    "image-size": "^0.3.5",
+    "image-size": "^0.4.0",
     "mkdirp": "^0.5.1",
     "optipng-bin": "~2.0.4",
     "pngquant-bin": "~3.0.0",
