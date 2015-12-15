@@ -19,7 +19,7 @@
     "eslint": "^0.20.0",
     "mocha": "~2.2.1",
     "sinon": "~1.14.1",
-    "sinon-chai": "~2.7.0"
+    "sinon-chai": "~2.8.0"
   },
   "dependencies": {
     "chai": "^3.4.1",
