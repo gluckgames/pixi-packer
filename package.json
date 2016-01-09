@@ -29,7 +29,7 @@
     "gmsmith": "^0.6.4",
     "image-size": "^0.4.0",
     "mkdirp": "^0.5.1",
-    "optipng-bin": "~2.0.4",
+    "optipng-bin": "~3.0.4",
     "pngquant-bin": "~3.0.0",
     "q": "^2.0.3",
     "qlimit": "^0.1.1",
