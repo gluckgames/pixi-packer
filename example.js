@@ -79,14 +79,16 @@ module.exports = {
             "loading_stage": "menu",
             "jpeg": true,
             "quality": 90,
-            "sprites": ["example-sprites/menu/menu_bg.png"]
+            "sprites": ["example-sprites/menu/menu_bg.png"],
+            "trim": false
         },
 
         /* Loading stage: Game */
         {
             "id": "game",
             "loading_stage": "game",
-            "sprites": ["example-sprites/game/**/*.png"]
+            "sprites": ["example-sprites/game/**/*.png"],
+            "trim": true
         }
     ]
 };

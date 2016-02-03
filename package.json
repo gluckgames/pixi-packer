@@ -31,7 +31,7 @@
     "mkdirp": "^0.5.1",
     "optipng-bin": "~2.0.4",
     "pngquant-bin": "~3.0.0",
-    "q": "^2.0.3",
+    "q": "^1.4.1",
     "qlimit": "^0.1.1",
     "rimraf": "^2.4.1",
     "sinon-chai": "^2.8.0",
