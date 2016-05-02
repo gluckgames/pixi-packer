@@ -1,29 +1,26 @@
 "use strict";
 
-var PixiPacker = require("../../index");
-var path = require("path");
-var assert = require("chai").assert;
-var mkdirp = require("mkdirp");
-var Q = require("q");
-var rimraf = require("rimraf");
-var fs = require("fs");
+let PixiPacker = require("../../index");
+let path = require("path");
+let expect = require("chai").expect;
+let promisify = require("es6-promisify");
+let rimraf = promisify(require("rimraf"));
+let mkdirp = promisify(require("mkdirp"));
+let fs = require("fs");
 
-describe("Full run", function () {
-    var pixiPacker, config, tempPath, outputPath;
+describe("Full run", function() {
+    this.timeout(60000);
+    let pixiPacker, config, tempPath, outputPath;
 
-    before(function() {
-        this.timeout(60000);
-
+    before(() => {
         tempPath = path.join(__dirname, "../tmp");
         outputPath = path.join(__dirname, "../output");
-        return Q.nfcall(rimraf, tempPath)
-        .then(function() {
-            return Q.nfcall(rimraf, outputPath);
-        })
-        .then(function() {
-            return Q.nfcall(mkdirp, tempPath);
-        })
-        .then(function() {
+        return Promise.all([
+            rimraf(outputPath),
+            rimraf(tempPath)
+        ])
+        .then(() => mkdirp(tempPath))
+        .then(() => {
             config = require("../../example.js");
 
             pixiPacker = new PixiPacker(
@@ -37,38 +34,38 @@ describe("Full run", function () {
         });
     });
 
-    after(function() {
-        return Q.nfcall(rimraf, outputPath)
-        .then(function() {
-            return Q.nfcall(rimraf, tempPath);
-        });
+    after(() => {
+        return Promise.all([
+            rimraf(outputPath),
+            rimraf(tempPath)
+        ]);
     });
 
-    it("creates an output directory", function() {
-        assert.ok(fs.lstatSync(outputPath).isDirectory());
+    it("creates an output directory", () => {
+        expect(fs.lstatSync(outputPath).isDirectory()).to.equal(true);
     });
 
-    it("creates an manifests", function() {
-        assert.ok(fs.lstatSync(outputPath + "/game_EN_web.json").isFile());
-        assert.ok(fs.lstatSync(outputPath + "/game_DE_web.json").isFile());
-        assert.ok(fs.lstatSync(outputPath + "/game_EN_web_retina.json").isFile());
-        assert.ok(fs.lstatSync(outputPath + "/game_DE_web_retina.json").isFile());
-        assert.ok(fs.lstatSync(outputPath + "/menu_EN_web.json").isFile());
-        assert.ok(fs.lstatSync(outputPath + "/menu_DE_web.json").isFile());
-        assert.ok(fs.lstatSync(outputPath + "/menu_EN_web_retina.json").isFile());
-        assert.ok(fs.lstatSync(outputPath + "/menu_DE_web_retina.json").isFile());
+    it("creates an manifests", () => {
+        expect(fs.lstatSync(outputPath + "/game_EN_web.json").isFile()).to.equal(true);
+        expect(fs.lstatSync(outputPath + "/game_DE_web.json").isFile()).to.equal(true);
+        expect(fs.lstatSync(outputPath + "/game_EN_web_retina.json").isFile()).to.equal(true);
+        expect(fs.lstatSync(outputPath + "/game_DE_web_retina.json").isFile()).to.equal(true);
+        expect(fs.lstatSync(outputPath + "/menu_EN_web.json").isFile()).to.equal(true);
+        expect(fs.lstatSync(outputPath + "/menu_DE_web.json").isFile()).to.equal(true);
+        expect(fs.lstatSync(outputPath + "/menu_EN_web_retina.json").isFile()).to.equal(true);
+        expect(fs.lstatSync(outputPath + "/menu_DE_web_retina.json").isFile()).to.equal(true);
     });
 
-    it("has the right resolution", function() {
-        var manifest = JSON.parse(fs.readFileSync(outputPath + "/game_DE_web_retina.json", "utf8"));
-        assert.equal(manifest.resolution, 2);
+    it("has the right resolution", () => {
+        let manifest = JSON.parse(fs.readFileSync(outputPath + "/game_DE_web_retina.json", "utf8"));
+        expect(manifest.resolution).to.equal(2);
     });
 
-    it("creates all images", function() {
-        var manifest = JSON.parse(fs.readFileSync(outputPath + "/game_DE_web_retina.json", "utf8"));
-        assert.ok(manifest.spritesheets.length > 0);
-        manifest.spritesheets.forEach(function(spritesheet) {
-            assert.ok(fs.lstatSync(outputPath + "/" + spritesheet.image).isFile());
+    it("creates all images", () => {
+        let manifest = JSON.parse(fs.readFileSync(outputPath + "/game_DE_web_retina.json", "utf8"));
+        expect(manifest.spritesheets.length).to.be.greaterThan(0);
+        manifest.spritesheets.forEach(spritesheet => {
+            expect(fs.lstatSync(outputPath + "/" + spritesheet.image).isFile()).to.equal(true);
         });
     });
 });

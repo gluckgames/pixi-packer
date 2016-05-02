@@ -2,6 +2,7 @@
 
 var Spritesheet = require("../../lib/spritesheet");
 var assert = require("chai").assert;
+var stream = require("stream");
 
 describe("Spritesheet", function () {
     var spritesheet, scaledSprites, groupConfig, config, cache, cachePath, imageProcessor;
@@ -54,8 +55,8 @@ describe("Spritesheet", function () {
             assert.notEqual(originalHash, spritesheet.calculateHash());
         });
 
-        it("changes when compression changes", function() {
-            groupConfig.compression = "optipng";
+        it("changes when compressor changes", function() {
+            groupConfig.compressor = new stream.PassThrough();
             assert.notEqual(originalHash, spritesheet.calculateHash());
         });
     });
