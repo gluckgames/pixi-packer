@@ -1,6 +1,6 @@
 {
   "name": "pixi-packer",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "A quick and flexible texture packer for PIXI.js",
   "scripts": {
     "pretest": "eslint lib test example.js",
