@@ -1,44 +1,49 @@
 "use strict";
 
-var ImageProcessor = require("../../lib/image_processor");
-var path = require("path");
-var assert = require("chai").assert;
-var mkdirp = require("mkdirp");
-var Q = require("q");
-var rimraf = require("rimraf");
-var imageSize = require("image-size");
-var fs = require("fs");
+let ImageProcessor = require("../../lib/image_processor");
+let path = require("path");
+let assert = require("chai").assert;
+let expect = require("chai").expect;
+let promisify = require("es6-promisify");
+let mkdirp = promisify(require("mkdirp"));
+let rimraf = promisify(require("rimraf"));
+let imageSize = promisify(require("image-size"));
+let fs = require("fs");
 
-describe("ImageProcessor", function () {
-    var imageProcessor, tempPath;
+describe("ImageProcessor", () => {
+    let imageProcessor, tempPath, mockTransformer, bytesTransformed;
 
-    beforeEach(function() {
+    beforeEach(() => {
         imageProcessor = new ImageProcessor({"use_image_magick": true});
 
+        bytesTransformed = 0;
+        mockTransformer = (buf) => {
+            bytesTransformed = buf.length;
+            return buf.slice();
+        };
+
         tempPath = path.join(__dirname, "../tmp");
-        return Q.nfcall(rimraf, tempPath)
-        .then(function() {
-            return Q.nfcall(mkdirp, tempPath);
-        });
+        return rimraf(tempPath)
+        .then(() => mkdirp(tempPath));
     });
 
-    afterEach(function() {
-        return Q.nfcall(rimraf, tempPath);
+    afterEach(() => {
+        return rimraf(tempPath);
     });
 
-    context("#trim", function() {
-        var outputPath;
+    context("#trim", () => {
+        let outputPath;
 
-        beforeEach(function() {
+        beforeEach(() => {
             outputPath = path.join(tempPath, "crop_out.png");
         });
 
-        it("works correctly on an image with transparency", function() {
-            var inputPath = path.join(__dirname, "../resources/crop.png");
+        it("works correctly on an image with transparency", () => {
+            let inputPath = path.join(__dirname, "../resources/crop.png");
             return imageProcessor.trim(inputPath, outputPath)
-            .then(function(data) {
-                return Q.nfcall(imageSize, outputPath)
-                .then(function(size) {
+            .then((data) => {
+                return imageSize(outputPath)
+                .then((size) => {
                     assert.equal(data.width, 159);
                     assert.equal(data.height, 150);
                     assert.equal(data.width, size.width);
@@ -47,12 +52,12 @@ describe("ImageProcessor", function () {
             });
         });
 
-        it("works correctly on an image without transparency", function() {
-            var inputPath = path.join(__dirname, "../resources/crop_full_colour.png");
+        it("works correctly on an image without transparency", () => {
+            let inputPath = path.join(__dirname, "../resources/crop_full_colour.png");
             return imageProcessor.trim(inputPath, outputPath)
-            .then(function(data) {
-                return Q.nfcall(imageSize, outputPath)
-                .then(function(size) {
+            .then((data) => {
+                return imageSize(outputPath)
+                .then((size) => {
                     assert.equal(data.width, 300);
                     assert.equal(data.height, 300);
                     assert.equal(data.width, size.width);
@@ -62,34 +67,53 @@ describe("ImageProcessor", function () {
         });
     });
 
-    context("#saveImageAsPng", function() {
-        var input, outputPath, inputSize;
+    context("#saveImageAsJpeg", () => {
+        let inputBuffer, outputPath;
 
-        beforeEach(function() {
-            outputPath = path.join(tempPath, "compressed.png");
-            var inputPath = path.join(__dirname, "../resources/crop.png");
-            input = fs.readFileSync(inputPath, {encoding: "binary"});
-            inputSize = input.length;
+        beforeEach(() => {
+            outputPath = path.join(tempPath, "compressed.jpeg");
+            let inputPath = path.join(__dirname, "../resources/crop.png");
+            inputBuffer = fs.readFileSync(inputPath);
         });
 
-        it("compression 'none'", function() {
-            return imageProcessor.saveImageAsPng(input, outputPath, 0, "none")
-            .then(function() {
+        it("compression 'null'", () => {
+            return imageProcessor.saveImageAsJpeg(inputBuffer, outputPath, 70, null)
+            .then(() =>{
+                expect(fs.statSync(outputPath).size).to.be.greaterThan(0);
+            });
+        });
+
+        it("use custom compressor", () => {
+            return imageProcessor.saveImageAsJpeg(inputBuffer, outputPath, 0, mockTransformer)
+            .then(() => {
+                expect(fs.statSync(outputPath).size).to.equal(bytesTransformed);
+            });
+        });
+
+    });
+
+    context("#saveImageAsPng", () => {
+        let inputBuffer, outputPath, inputSize;
+
+        beforeEach(() => {
+            outputPath = path.join(tempPath, "compressed.png");
+            let inputPath = path.join(__dirname, "../resources/crop.png");
+            inputBuffer = fs.readFileSync(inputPath);
+            inputSize = fs.statSync(inputPath).size;
+        });
+
+        it("compression 'null'", () => {
+            return imageProcessor.saveImageAsPng(inputBuffer, outputPath, 0, null)
+            .then(() => {
                 assert.equal(fs.statSync(outputPath).size, inputSize);
             });
         });
 
-        it("compression 'pngquant'", function() {
-            return imageProcessor.saveImageAsPng(input, outputPath, 0, "pngquant")
-            .then(function() {
-                assert.isBelow(fs.statSync(outputPath).size, inputSize);
-            });
-        });
-
-        it("compression 'optipng'", function() {
-            return imageProcessor.saveImageAsPng(input, outputPath, 0, "optipng")
-            .then(function() {
-                assert.isBelow(fs.statSync(outputPath).size, inputSize);
+        it("use custom compressor", () => {
+            return imageProcessor.saveImageAsPng(inputBuffer, outputPath, 0, mockTransformer)
+            .then(() => {
+                assert.equal(fs.statSync(outputPath).size, inputSize);
+                assert.equal(bytesTransformed, inputSize);
             });
         });
     });

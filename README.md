@@ -24,14 +24,22 @@ The aim is to provide all the most useful features of commercial sprite packers 
 
 ## Current known issues
 - All source images have to be pngs
-- The quality parameter for pngs is ignored, it only works for jpegs
 
 ## External dependencies
 - ImageMagick
 
+## Changes for V2
+Support for Node < 4.0.0 is dropped. If you're stuck with an older version you can stick to V1.x.x.
+
+PixiPacker V2 doesn't come with build-in png compression anymore. There's also no default compression anymore. You can now pass in any function via ```compressor``` that takes a buffer and returns a Promise returning a buffer. All imagemin modules should work: https://github.com/imagemin
+
+The old "compression" parameter will be ignored, so be aware of that. See 'Compression' and the example.js for more details.
+
 ## Usage
 Create an ```images.js``` in the folder where you're storing your sprites. Have a look at ```example.js``` in this folder
 for an in-depth explanation.
+
+Make sure <a href="http://www.imagemagick.org/script/index.php">ImageMagick</a> is installed locally. On OSX you can do so via ```brew install imagemagick```, other operating systems will vary.
 
 Now you can create your spritesheets via
 ```
@@ -65,6 +73,11 @@ Please don't commit your cache folder or share it between machines, it will not 
 For the purpose of cache invalidation cache keys are hashes based on the source sprites. To avoid having to open every image the hash is based on the full path and file size.
 
 If for some reason the cache has become stale or just too large (nothing is ever deleted) you can delete the cache folder or use ```--clean-cache```.
+
+## Compression
+Both JPEG and PNG outputs can be compressed. To do so you can add a "compressor" argument to each group config. Compressors have to be a function taking a Buffer and returning a Promise for a buffer. A good source for those is the <a href="https://github.com/imagemin/">imagemin project</a>. We have used <a href="https://github.com/imagemin/imagemin-pngquant">pngquant</a> (good compression, but is sometimes visible), <a href="https://github.com/imagemin/imagemin-optipng">optipng</a> (nearly invisible but a lot less compact), <a href="https://github.com/imagemin/imagemin-jpegtran">jpegtran</a> and <a href="https://github.com/imagemin/imagemin-mozjpeg">mozJpeg</a> (see https://blarg.co.uk/blog/comparison-of-jpeg-lossless-compression-tools for a comparison of jpeg compressions)
+
+Be aware: Changing parameters on your png/jpeg compressor might not invalidate your old cache since the cache key is based soley on the constructor name of the compressor. Clean you pixi-packer cache if you suspect this is the case.
 
 ## API
 Pixi-packer can be used without the CLI. See ```cli.js``` for how it's done or use ```--help```

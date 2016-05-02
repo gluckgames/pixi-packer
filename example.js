@@ -1,8 +1,8 @@
 /*eslint-env node */
-module.exports = {
-    /* Only "true" is supported (read: tested) at the moment */
-    "use_image_magick": true,
+var pngQuant = require("imagemin-pngquant");
+var jpegTran = require("imagemin-jpegtran");
 
+module.exports = {
     /**
      * This defines a set of scales. For every scale a full set of
      * spritesheets will be generated. The "resolution" field is passed
@@ -66,12 +66,14 @@ module.exports = {
             "id": "en_menu",
             "variation": "EN",
             "loading_stage": "menu",
+            "compressor": pngQuant(),
             "sprites": ["example-sprites/menu/EN/*.png"]
         },
         {
             "id": "de_menu",
             "variation": "DE",
             "loading_stage": "menu",
+            "compressor": pngQuant(),
             "sprites": ["example-sprites/menu/DE/*.png"]
         },
         {   // No alpha channel needed, so we can use JPEG
@@ -79,16 +81,16 @@ module.exports = {
             "loading_stage": "menu",
             "jpeg": true,
             "quality": 90,
-            "sprites": ["example-sprites/menu/menu_bg.png"],
-            "trim": false
+            "compressor": jpegTran(),
+            "sprites": ["example-sprites/menu/menu_bg.png"]
         },
 
         /* Loading stage: Game */
         {
             "id": "game",
             "loading_stage": "game",
-            "sprites": ["example-sprites/game/**/*.png"],
-            "trim": true
+            // no compressor used
+            "sprites": ["example-sprites/game/**/*.png"]
         }
     ]
 };
