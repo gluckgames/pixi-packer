@@ -65,6 +65,19 @@ describe("ImageProcessor", () => {
                 });
             });
         });
+    })
+
+    context("#scale", () => {
+        it("works correctly on images with extreme ratios", () => {
+            let outputPath = path.join(tempPath, "scale_out.png");
+            let inputPath = path.join(__dirname, "../resources/extreme_ratio.png");
+            return imageProcessor.scale(inputPath, outputPath, {width: 4, height: 792})
+            .then(() => imageSize(outputPath))
+            .then((size) => {
+                assert.equal(size.width, 4);
+                assert.equal(size.height, 792);
+            });
+        });
     });
 
     context("#saveImageAsJpeg", () => {
