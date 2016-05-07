@@ -53,6 +53,8 @@ if (argv.debug) {
 }
 
 pixiPacker.process()
-.done(function() {
-
+.catch(err => {
+    console.error("Error:", err);
+    /* eslint no-process-exit:0 */
+    process.exit(1);
 });
