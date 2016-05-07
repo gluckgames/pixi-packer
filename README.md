@@ -1,6 +1,7 @@
 # PIXI Packer
 <a href="https://travis-ci.org/Gamevy/pixi-packer"><img alt="Build Status" src="https://travis-ci.org/Gamevy/pixi-packer.svg?branch=master" /></a>
 [![Dependency Status](https://david-dm.org/gamevy/pixi-packer.svg)](https://david-dm.org/gamevy/pixi-packer)
+<a href="https://david-dm.org/Gamevy/pixi-packer#info=devDependencies" title="devDependency status"><img src="https://david-dm.org/Gamevy/pixi-packer/dev-status.svg"/></a>
 
 PIXI Packer is a sprite packer made for HTML5 game engine <a href="https://github.com/pixijs/pixi.js">PIXI.js</a>. It's designed to create small downloads and be easy and fast to use.
 
