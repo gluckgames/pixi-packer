@@ -30,23 +30,14 @@ module.exports = {
     ],
 
     /**
-     * This enforces an upper bound of pixels per sprite sheet. This can be
-     * useful for older browsers and devices, especially Safari on iPhone4s who
-     * starts to behave weirdly with images larger than 3 megapixel. See
-     * http://www.williammalone.com/articles/html5-javascript-ios-maximum-image-size/
-     * for more information.
-     * For sake of this example a much lower limit is used so I don't need too add
-     * too many images to this repository
+     * This defines how large a normal spritesheet will be at most
      **/
-    "max_pixels_per_sprite_sheet": {
-        "soft": 0.7 * 1024 * 1024,  // Normally: 2.2 * 1024 * 1024
-        "hard": 1 * 1024 * 1024     // Normally: 3 * 1024 * 1024
+    spritesheet: {
+        max_width: 500,          // default: 2048
+        max_height: 500,         // default: 1024
+        oversized_warning: true, // default: false
+        padding: 1               // default: 1
     },
-
-    /**
-     * Trims of transparent pixels at the sprite edges
-     **/
-    "trim": true,
 
     /**
      * Groups are units of images that fall into the same category in respect to

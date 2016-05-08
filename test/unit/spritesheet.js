@@ -5,13 +5,17 @@ var assert = require("chai").assert;
 var stream = require("stream");
 
 describe("Spritesheet", function () {
-    var spritesheet, scaledSprites, groupConfig, config, cache, cachePath, imageProcessor;
+    var spritesheet, bin, groupConfig, config, cache, cachePath, imageProcessor;
 
     beforeEach(function() {
-        scaledSprites = [
-            {"path": "/one/sprite"},
-            {"path": "/another/sprite"}
-        ];
+        bin = {
+            width: 1024,
+            height: 1024,
+            rects: [
+                {data: {path: "/one/sprite"}},
+                {data: {path: "/another/sprite"}}
+            ]
+        };
         groupConfig = {
             jpeg: true,
             quality: 90,
@@ -21,27 +25,27 @@ describe("Spritesheet", function () {
         cache = {};
         cachePath = "/some/path";
         imageProcessor = {};
-        spritesheet = new Spritesheet("test-spritesheet", scaledSprites, groupConfig, config, cache, cachePath, imageProcessor);
+        spritesheet = new Spritesheet("test-spritesheet", bin, groupConfig, config, cache, cachePath, imageProcessor);
     });
 
-    context("#calculateHash", function() {
-        var originalHash;
-        beforeEach(function() {
+    context("#calculateHash", () => {
+        let originalHash;
+        beforeEach(() => {
             originalHash = spritesheet.calculateHash();
         });
 
         it("stays the same if no change is made", function() {
-            var otherSpritesheet = new Spritesheet("test-spritesheet", scaledSprites, groupConfig, config, cache, cachePath, imageProcessor);
+            let otherSpritesheet = new Spritesheet("test-spritesheet", bin, groupConfig, config, cache, cachePath, imageProcessor);
             assert.equal(originalHash, otherSpritesheet.calculateHash());
         });
 
-        it("changes when scaledSprites changes", function() {
-            scaledSprites[0].path = "/one/sprite/changed";
+        it("changes when path of a rect changes", function() {
+            bin.rects[0].data.path = "/one/sprite/changed";
             assert.notEqual(originalHash, spritesheet.calculateHash());
         });
 
         it("changes when scaledSprites is added", function() {
-            scaledSprites.push({"path": "/yet/another/one"});
+            bin.rects.push({data: {path: "foo/bar"}})
             assert.notEqual(originalHash, spritesheet.calculateHash());
         });
 
