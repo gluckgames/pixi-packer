@@ -78,7 +78,7 @@ If for some reason the cache has become stale or just too large (nothing is ever
 ## Compression
 Both JPEG and PNG outputs can be compressed. To do so you can add a "compressor" argument to each group config. Compressors have to be a function taking a Buffer and returning a Promise for a buffer. A good source for those is the <a href="https://github.com/imagemin/">imagemin project</a>. We have used <a href="https://github.com/imagemin/imagemin-pngquant">pngquant</a> (good compression, but is sometimes visible), <a href="https://github.com/imagemin/imagemin-optipng">optipng</a> (nearly invisible but a lot less compact), <a href="https://github.com/imagemin/imagemin-jpegtran">jpegtran</a> and <a href="https://github.com/imagemin/imagemin-mozjpeg">mozJpeg</a> (see https://blarg.co.uk/blog/comparison-of-jpeg-lossless-compression-tools for a comparison of jpeg compressions)
 
-Be aware: Changing parameters on your png/jpeg compressor might not invalidate your old cache since the cache key is based soley on the constructor name of the compressor. Clean you pixi-packer cache if you suspect this is the case.
+Be aware: Changing compressor will not invalidate your cache for that group. You can either change the name or use ```--clean```.
 
 ## API
 Pixi-packer can be used without the CLI. See ```cli.js``` for how it's done or use ```--help```
