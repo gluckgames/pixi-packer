@@ -23,16 +23,17 @@ The aim is to provide all the most useful features of commercial sprite packers 
 - Enforce maximum pixel size per image - Avoid problems with old iOS devices and browsers
 - git friendly - check all the source images into git rather than finished sprites
 
-## Current known issues
-- All source images have to be pngs
-
 ## External dependencies
 - ImageMagick
 
-## Changes for V2
-Support for Node < 4.0.0 is dropped. If you're stuck with an older version you can stick to V1.x.x.
+## Changes for V3
+- ```max_pixels_per_sprite_sheet``` isn't needed anymore. All spritesheets will be (if possible) not larger than 2048x1024. If you want to change these dimensions or enable warnings for oversized sprites that won't fit into those constraints you can override those parameters on group level. You can now also define different padding sizes for every group. See ```example.js``` for more information.
+- A new config option ```group_default``` has been added which allows explicit defaults to be set for all groups.
+- ```loading_stages``` are now optional (both for defining them and on the group level). The default loading stage "main" will be used instead.
 
-PixiPacker V2 doesn't come with build-in png compression anymore. There's also no default compression anymore. You can now pass in any function via ```compressor``` that takes a buffer and returns a Promise returning a buffer. All imagemin modules should work: https://github.com/imagemin
+## Changes for V2
+- Support for Node < 4.0.0 is dropped. If you're stuck with an older version you can stick to V1.x.x.
+- PixiPacker V2 doesn't come with build-in png compression anymore. There's also no default compression anymore. You can now pass in any function via ```compressor``` that takes a buffer and returns a Promise returning a buffer. All imagemin modules should work: https://github.com/imagemin
 
 The old "compression" parameter will be ignored, so be aware of that. See 'Compression' and the example.js for more details.
 

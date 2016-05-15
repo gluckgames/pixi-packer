@@ -17,36 +17,21 @@ module.exports = {
      * Variations can be used for themes or languages. Sprites that are
      * not part of one variation will be included in all of them.
      **/
-    "variations": ["EN", "DE"],
+    "variations": [ "EN", "DE" ],
 
     /**
      * Different loading stages mean the game can started before all
      * images have been loaded. Remaining images can be loaded while
      * the user makes decisions or the game is going on.
      **/
-    "loading_stages": [
-        "menu",
-        "game"
-    ],
+    "loading_stages": [ "menu", "game" ],
 
-    /**
-     * This enforces an upper bound of pixels per sprite sheet. This can be
-     * useful for older browsers and devices, especially Safari on iPhone4s who
-     * starts to behave weirdly with images larger than 3 megapixel. See
-     * http://www.williammalone.com/articles/html5-javascript-ios-maximum-image-size/
-     * for more information.
-     * For sake of this example a much lower limit is used so I don't need too add
-     * too many images to this repository
-     **/
-    "max_pixels_per_sprite_sheet": {
-        "soft": 0.7 * 1024 * 1024,  // Normally: 2.2 * 1024 * 1024
-        "hard": 1 * 1024 * 1024     // Normally: 3 * 1024 * 1024
+    group_default: {
+        max_width: 500,          // default: 2048
+        max_height: 500,         // default: 1024
+        oversized_warning: true, // default: false
+        padding: 1               // default: 1
     },
-
-    /**
-     * Trims of transparent pixels at the sprite edges
-     **/
-    "trim": true,
 
     /**
      * Groups are units of images that fall into the same category in respect to
@@ -55,13 +40,9 @@ module.exports = {
      * - loading stage (see above)
      * - quality
      *
-     * Groups don't have to be chosen to be below a certain pixel size, they are
-     * split automatically
-     *
      * All paths are relative to this file
      **/
     "groups": [
-        /* Loading stage: Menu */
         {
             "id": "en_menu",
             "variation": "EN",
@@ -85,11 +66,9 @@ module.exports = {
             "sprites": ["example-sprites/menu/menu_bg.png"]
         },
 
-        /* Loading stage: Game */
         {
             "id": "game",
             "loading_stage": "game",
-            // no compressor used
             "sprites": ["example-sprites/game/**/*.png"]
         }
     ]

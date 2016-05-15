@@ -9,12 +9,13 @@ let mkdirp = promisify(require("mkdirp"));
 let rimraf = promisify(require("rimraf"));
 let imageSize = promisify(require("image-size"));
 let fs = require("fs");
+let imageType = require("image-type");
 
 describe("ImageProcessor", () => {
     let imageProcessor, tempPath, mockTransformer, bytesTransformed;
 
     beforeEach(() => {
-        imageProcessor = new ImageProcessor({"use_image_magick": true});
+        imageProcessor = new ImageProcessor({});
 
         bytesTransformed = 0;
         mockTransformer = (buf) => {
@@ -80,54 +81,46 @@ describe("ImageProcessor", () => {
         });
     });
 
-    context("#saveImageAsJpeg", () => {
-        let inputBuffer, outputPath;
+    context("#combine", () => {
+        it("works correctly with png", () => {
+            let outputPath = path.join(tempPath, "combine_out.png");
+            let rects = [
+                {x: 0, y: 0, data: { path: path.join(__dirname, "../resources/combine_1.png") }},
+                {x: 102, y: 0, data: { path: path.join(__dirname, "../resources/combine_2.png") }},
+                {x: 0, y: 172, data: { path: path.join(__dirname, "../resources/combine_3.png") }}
+            ];
 
-        beforeEach(() => {
-            outputPath = path.join(tempPath, "compressed.jpeg");
-            let inputPath = path.join(__dirname, "../resources/crop.png");
-            inputBuffer = fs.readFileSync(inputPath);
-        });
+            return imageProcessor.combine(rects, 203, 343, outputPath, false, null, mockTransformer)
+            .then(() => imageSize(outputPath))
+            .then((size) => {
+                assert.equal(size.width, 203);
+                assert.equal(size.height, 343);
+                assert.equal(bytesTransformed, fs.statSync(outputPath).size);
+                assert.equal(imageType(fs.readFileSync(outputPath)).mime, "image/png");
 
-        it("compression 'null'", () => {
-            return imageProcessor.saveImageAsJpeg(inputBuffer, outputPath, 70, null)
-            .then(() =>{
-                expect(fs.statSync(outputPath).size).to.be.greaterThan(0);
+                // ToDo: compare against 'combine_expected'
             });
         });
 
-        it("use custom compressor", () => {
-            return imageProcessor.saveImageAsJpeg(inputBuffer, outputPath, 0, mockTransformer)
-            .then(() => {
-                expect(fs.statSync(outputPath).size).to.equal(bytesTransformed);
-            });
-        });
+        it("works correctly with jpeg", () => {
+            let outputPath = path.join(tempPath, "combine_out.png");
+            let rects = [
+                {x: 0, y: 0, data: { path: path.join(__dirname, "../resources/combine_1.png") }},
+                {x: 102, y: 0, data: { path: path.join(__dirname, "../resources/combine_2.png") }},
+                {x: 0, y: 172, data: { path: path.join(__dirname, "../resources/combine_3.png") }}
+            ];
 
-    });
+            return imageProcessor.combine(rects, 203, 343, outputPath, true, 90, mockTransformer)
+            .then(() => imageSize(outputPath))
+            .then((size) => {
+                assert.equal(size.width, 203);
+                assert.equal(size.height, 343);
+                assert.equal(bytesTransformed, fs.statSync(outputPath).size);
+                assert.equal(imageType(fs.readFileSync(outputPath)).mime, "image/jpeg");
 
-    context("#saveImageAsPng", () => {
-        let inputBuffer, outputPath, inputSize;
-
-        beforeEach(() => {
-            outputPath = path.join(tempPath, "compressed.png");
-            let inputPath = path.join(__dirname, "../resources/crop.png");
-            inputBuffer = fs.readFileSync(inputPath);
-            inputSize = fs.statSync(inputPath).size;
-        });
-
-        it("compression 'null'", () => {
-            return imageProcessor.saveImageAsPng(inputBuffer, outputPath, 0, null)
-            .then(() => {
-                assert.equal(fs.statSync(outputPath).size, inputSize);
-            });
-        });
-
-        it("use custom compressor", () => {
-            return imageProcessor.saveImageAsPng(inputBuffer, outputPath, 0, mockTransformer)
-            .then(() => {
-                assert.equal(fs.statSync(outputPath).size, inputSize);
-                assert.equal(bytesTransformed, inputSize);
+                // ToDo: compare against 'combine_expected'
             });
         });
     });
+
 });
