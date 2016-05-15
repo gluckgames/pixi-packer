@@ -36,6 +36,10 @@ describe("Config", () => {
             expect(config.groups[1].trim).to.equal(true);
             expect(config.groups[0].jpeg).to.equal(false);
             expect(config.groups[1].jpeg).to.equal(true);
+            expect(config.groups[0].max_width).to.equal(2048);
+            expect(config.groups[0].max_height).to.equal(1024);
+            expect(config.groups[0].oversized_warning).to.equal(false);
+            expect(config.groups[0].padding).to.equal(1);
         });
     });
 
@@ -71,21 +75,6 @@ describe("Config", () => {
         it("defaults correctly", () => {
             let config = new Config({});
             expect(config.loading_stages).to.deep.equal(["main"]);
-        });
-    });
-
-    context("spritesheet", () => {
-        it("are returned correctly", () => {
-            let config = new Config({ spritesheet: {padding: 5} });
-            expect(config.spritesheet.padding).to.equal(5);
-        });
-
-        it("defaults correctly", () => {
-            let config = new Config({});
-            expect(config.spritesheet.max_width).to.equal(2048);
-            expect(config.spritesheet.max_height).to.equal(1024);
-            expect(config.spritesheet.oversized_warning).to.equal(false);
-            expect(config.spritesheet.padding).to.equal(2);
         });
     });
 });
