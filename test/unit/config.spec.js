@@ -106,4 +106,16 @@ describe("Config", () => {
             expect(config.show_progress).to.be.equal(true);
         })
     });
+
+    context("post_processing", () => {
+        it("are returned correctly", () => {
+            let config = new Config({ post_processing: {foo: {bar: "something"}} });
+            expect(config.post_processing.foo.bar).to.deep.equal("something");
+        });
+
+        it("defaults correctly", () => {
+            let config = new Config({});
+            expect(config.post_processing).to.deep.equal({});
+        });
+    });
 });
