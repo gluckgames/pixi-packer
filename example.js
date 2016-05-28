@@ -30,7 +30,8 @@ module.exports = {
         max_width: 500,          // default: 2048
         max_height: 500,         // default: 1024
         oversized_warning: true, // default: false
-        padding: 1               // default: 1
+        padding: 1,              // default: 1
+        force_power_of_two: true    // default: false
     },
 
     /**

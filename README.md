@@ -21,6 +21,7 @@ The aim is to provide all the most useful features of commercial sprite packers 
 - Configurable image quality - Compression and image type (png/jpg) can be defined separately for every sprite
 - Trimming - Automatically crops away transparent pixels and tells PIXI how to correct for it. This can lead to significant savings in terms of download size
 - Enforce maximum pixel size per image - Avoid problems with old iOS devices and browsers
+- Optional power-of-two support
 - git friendly - check all the source images into git rather than finished sprites
 
 ## External dependencies
