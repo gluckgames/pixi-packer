@@ -26,6 +26,8 @@
     "sinon-chai": "~2.8.0"
   },
   "dependencies": {
+    "cli-cursor": "^1.0.2",
+    "cli-spinner": "^0.2.5",
     "concat-stream": "^1.5.1",
     "es6-promisify": "^4.0.0",
     "filesize": "^3.3.0",
@@ -34,9 +36,11 @@
     "gm": "^1.21.1",
     "gmsmith": "^1.1.0",
     "image-size": "^0.5.0",
+    "is-ci": "^1.0.8",
     "mkdirp": "^0.5.1",
     "multi-bin-packer": "^1.1.2",
     "promise-limit": "^2.1.1",
+    "promise-queue": "^2.2.3",
     "rimraf": "^2.4.1",
     "underscore": "^1.8.3",
     "yargs": "^4.4.0"
