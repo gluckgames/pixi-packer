@@ -12,15 +12,15 @@ var yargs = require("yargs")
     .boolean("clean-cache")
     .boolean("clean-output")
     .boolean("clean")
-    .boolean("quite")
+    .boolean("quiet")
     .boolean("debug")
     .describe("cache", "path to cache folder. Will be created if necassary. Defaults to ~/.pixi-packer-tmp")
     .describe("clean-cache", "empties cache folder before processing")
     .describe("clean-output", "empties output folder before processing")
     .describe("clean", "empties both cache and output folder before processing")
-    .describe("quite", "Surpressses log output apart from errors")
+    .describe("quiet", "Surpressses log output apart from errors")
     .describe("debug", "Enable better stack traces at the cost of performance")
-    .alias("q", "quite")
+    .alias("q", "quiet")
     .demand(2);
 
 var argv = yargs.argv;
@@ -34,7 +34,7 @@ var cachePath = argv.cache || path.join(process.env.HOME || process.env.USERPROF
 
 var pixiPacker = new PixiPacker(config, inputPath, outputPath, cachePath);
 
-if (argv.quite) {
+if (argv.quiet) {
     pixiPacker.log = {log: function() {}, error: console.error, info: function() {}, warn: function() {}};
 }
 
