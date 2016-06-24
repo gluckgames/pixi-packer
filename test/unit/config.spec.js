@@ -77,4 +77,33 @@ describe("Config", () => {
             expect(config.loading_stages).to.deep.equal(["main"]);
         });
     });
+
+    context("concurrency_limit", () => {
+        it("defaults correctly", () => {
+            let config = new Config({});
+            expect(config.concurrency_limit).to.be.greaterThan(0);
+        });
+
+        it("reads image_processing_concurrency_limit", () => {
+            let config = new Config({image_processing_concurrency_limit: 7});
+            expect(config.concurrency_limit).to.be.equal(7);
+        });
+
+        it("reads concurrency_limit", () => {
+            let config = new Config({concurrency_limit: 15});
+            expect(config.concurrency_limit).to.be.equal(15);
+        });
+
+        it("reads IMAGE_PROCESSING_CONCURRENCY env var", () => {
+            let config = new Config({}, {IMAGE_PROCESSING_CONCURRENCY: 10});
+            expect(config.concurrency_limit).to.be.equal(10);
+        });
+    });
+
+    context("show_progress", () => {
+        it("reads the correct field", () => {
+            let config = new Config({show_progress: true});
+            expect(config.show_progress).to.be.equal(true);
+        })
+    });
 });

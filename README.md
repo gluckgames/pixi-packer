@@ -101,7 +101,6 @@ gulp.task("sprites", function () {
     );
 
     pixiPacker.log = {
-        log: _.compose(gutil.log, util.format),
         error: _.compose(gutil.log, util.format),
         info: _.compose(gutil.log, util.format),
         warn: _.compose(gutil.log, util.format)

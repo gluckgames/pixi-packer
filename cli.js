@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 "use strict";
 
-var PixiPacker = require("./index");
-var path = require("path");
+const PixiPacker = require("./index");
+const path = require("path");
+const cliCursor = require("cli-cursor");
 
 var yargs = require("yargs")
     .usage(
@@ -52,9 +53,11 @@ if (argv.debug) {
     require("q").longStackSupport = true;
 }
 
+cliCursor.hide();
+
 pixiPacker.process()
 .catch(err => {
-    console.error("Error:", err);
+    console.error("Error:", err.stack);
     /* eslint no-process-exit:0 */
     process.exit(1);
 });
