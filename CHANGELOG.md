@@ -1,3 +1,6 @@
+# 3.1.1
+- Fix typo (#37)
+
 # 3.1.0
 - Added progress indicator (#33)
 - Image processing limit refactor (#33)
