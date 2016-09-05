@@ -1,3 +1,6 @@
+# 3.2.1
+- republishing
+
 # 3.2.0
 - The group parameter 'variation' now accepts an array as well
 
