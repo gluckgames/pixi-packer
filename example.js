@@ -17,7 +17,7 @@ module.exports = {
      * Variations can be used for themes or languages. Sprites that are
      * not part of one variation will be included in all of them.
      **/
-    "variations": [ "EN", "DE" ],
+    "variations": [ "EN", "DE"],
 
     /**
      * Different loading stages mean the game can started before all
@@ -35,7 +35,8 @@ module.exports = {
 
     /**
      * Groups are units of images that fall into the same category in respect to
-     * - Variations: EN, DE, or (if not defined) both
+     * - Variations: EN, DE, or (if not defined) both. If an array is provided
+     *               the group will be added to all of the listed variations
      * - JPEG: true/false (e.g. do we need an alpha channel?)
      * - loading stage (see above)
      * - quality
@@ -69,6 +70,7 @@ module.exports = {
         {
             "id": "game",
             "loading_stage": "game",
+            "variation": ["DE", "EN"], // Equivalent to not having variation at all since the array includes all current variations
             "sprites": ["example-sprites/game/**/*.png"]
         }
     ]
