@@ -1,3 +1,6 @@
+# 3.2.0
+- The group parameter 'variation' now accepts an array as well
+
 # 3.1.1
 - Fix typo (#37)
 
