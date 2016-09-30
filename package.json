@@ -43,7 +43,7 @@
     "promise-queue": "^2.2.3",
     "rimraf": "^2.4.1",
     "underscore": "^1.8.3",
-    "yargs": "^5.0.0-candidate"
+    "yargs": "^6.0.0"
   },
   "files": [
     "lib",
