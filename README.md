@@ -1,6 +1,7 @@
 # PIXI Packer
 <a href="https://travis-ci.org/Gamevy/pixi-packer"><img alt="Build Status" src="https://travis-ci.org/Gamevy/pixi-packer.svg?branch=master" /></a>
 [![Dependency Status](https://david-dm.org/gamevy/pixi-packer.svg)](https://david-dm.org/gamevy/pixi-packer)
+<a href="https://david-dm.org/Gamevy/pixi-packer#info=devDependencies" title="devDependency status"><img src="https://david-dm.org/Gamevy/pixi-packer/dev-status.svg"/></a>
 
 PIXI Packer is a sprite packer made for HTML5 game engine <a href="https://github.com/pixijs/pixi.js">PIXI.js</a>. It's designed to create small downloads and be easy and fast to use.
 
@@ -22,16 +23,25 @@ The aim is to provide all the most useful features of commercial sprite packers 
 - Enforce maximum pixel size per image - Avoid problems with old iOS devices and browsers
 - git friendly - check all the source images into git rather than finished sprites
 
-## Current known issues
-- All source images have to be pngs
-- The quality parameter for pngs is ignored, it only works for jpegs
-
 ## External dependencies
 - ImageMagick
+
+## Changes for V3
+- ```max_pixels_per_sprite_sheet``` isn't needed anymore. All spritesheets will be (if possible) not larger than 2048x1024. If you want to change these dimensions or enable warnings for oversized sprites that won't fit into those constraints you can override those parameters on group level. You can now also define different padding sizes for every group. See ```example.js``` for more information.
+- A new config option ```group_default``` has been added which allows explicit defaults to be set for all groups.
+- ```loading_stages``` are now optional (both for defining them and on the group level). The default loading stage "main" will be used instead.
+
+## Changes for V2
+- Support for Node < 4.0.0 is dropped. If you're stuck with an older version you can stick to V1.x.x.
+- PixiPacker V2 doesn't come with build-in png compression anymore. There's also no default compression anymore. You can now pass in any function via ```compressor``` that takes a buffer and returns a Promise returning a buffer. All imagemin modules should work: https://github.com/imagemin
+
+The old "compression" parameter will be ignored, so be aware of that. See 'Compression' and the example.js for more details.
 
 ## Usage
 Create an ```images.js``` in the folder where you're storing your sprites. Have a look at ```example.js``` in this folder
 for an in-depth explanation.
+
+Make sure <a href="http://www.imagemagick.org/script/index.php">ImageMagick</a> is installed locally. On OSX you can do so via ```brew install imagemagick```, other operating systems will vary.
 
 Now you can create your spritesheets via
 ```
@@ -66,6 +76,11 @@ For the purpose of cache invalidation cache keys are hashes based on the source 
 
 If for some reason the cache has become stale or just too large (nothing is ever deleted) you can delete the cache folder or use ```--clean-cache```.
 
+## Compression
+Both JPEG and PNG outputs can be compressed. To do so you can add a "compressor" argument to each group config. Compressors have to be a function taking a Buffer and returning a Promise for a buffer. A good source for those is the <a href="https://github.com/imagemin/">imagemin project</a>. We have used <a href="https://github.com/imagemin/imagemin-pngquant">pngquant</a> (good compression, but is sometimes visible), <a href="https://github.com/imagemin/imagemin-optipng">optipng</a> (nearly invisible but a lot less compact), <a href="https://github.com/imagemin/imagemin-jpegtran">jpegtran</a> and <a href="https://github.com/imagemin/imagemin-mozjpeg">mozJpeg</a> (see https://blarg.co.uk/blog/comparison-of-jpeg-lossless-compression-tools for a comparison of jpeg compressions)
+
+Be aware: Changing compressor will not invalidate your cache for that group. You can either change the name or use ```--clean```.
+
 ## API
 Pixi-packer can be used without the CLI. See ```cli.js``` for how it's done or use ```--help```
 
@@ -86,7 +101,6 @@ gulp.task("sprites", function () {
     );
 
     pixiPacker.log = {
-        log: _.compose(gutil.log, util.format),
         error: _.compose(gutil.log, util.format),
         info: _.compose(gutil.log, util.format),
         warn: _.compose(gutil.log, util.format)
